@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Cont">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Simbol" Type="nvarchar" MaxLength="50" />
+    <Property Name="Denumire" Type="nvarchar" MaxLength="50" />
+    <Property Name="SID" Type="float" />
+    <Property Name="SIC" Type="float" />
+  </EntityType>
+  <EntityType Name="Operatie">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Numar" Type="int" />
+    <Property Name="Data" Type="date" />
+    <Property Name="Doc" Type="int" />
+    <Property Name="DataDoc" Type="date" />
+    <Property Name="Explicatie" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Rulaje">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idCont" Type="int" />
+    <Property Name="idOperatie" Type="int" />
+    <Property Name="SumaD" Type="float" />
+    <Property Name="SumaC" Type="float" />
+  </EntityType>
+  <Association Name="FK_Rulaje_Cont">
+    <End Role="Cont" Type="Self.Cont" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Rulaje" Type="Self.Rulaje" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cont">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Rulaje">
+        <PropertyRef Name="idCont" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rulaje_Operatie">
+    <End Role="Operatie" Type="Self.Operatie" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Rulaje" Type="Self.Rulaje" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Operatie">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Rulaje">
+        <PropertyRef Name="idOperatie" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="BalantaVerificare2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="Cont" EntityType="Self.Cont" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Operatie" EntityType="Self.Operatie" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Rulaje" EntityType="Self.Rulaje" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Rulaje_Cont" Association="Self.FK_Rulaje_Cont">
+      <End Role="Cont" EntitySet="Cont" />
+      <End Role="Rulaje" EntitySet="Rulaje" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rulaje_Operatie" Association="Self.FK_Rulaje_Operatie">
+      <End Role="Operatie" EntitySet="Operatie" />
+      <End Role="Rulaje" EntitySet="Rulaje" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

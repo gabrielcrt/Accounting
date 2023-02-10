@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Cont">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Simbol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Denumire" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SID" Type="Double" />
+    <Property Name="SIC" Type="Double" />
+    <NavigationProperty Name="Rulajes" Relationship="Self.FK_Rulaje_Cont" FromRole="Cont" ToRole="Rulaje" />
+  </EntityType>
+  <EntityType Name="Operatie">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Numar" Type="Int32" />
+    <Property Name="Data" Type="DateTime" Precision="0" />
+    <Property Name="Doc" Type="Int32" />
+    <Property Name="DataDoc" Type="DateTime" Precision="0" />
+    <Property Name="Explicatie" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Rulajes" Relationship="Self.FK_Rulaje_Operatie" FromRole="Operatie" ToRole="Rulaje" />
+  </EntityType>
+  <EntityType Name="Rulaje">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idCont" Type="Int32" />
+    <Property Name="idOperatie" Type="Int32" />
+    <Property Name="SumaD" Type="Double" />
+    <Property Name="SumaC" Type="Double" />
+    <NavigationProperty Name="Cont" Relationship="Self.FK_Rulaje_Cont" FromRole="Rulaje" ToRole="Cont" />
+    <NavigationProperty Name="Operatie" Relationship="Self.FK_Rulaje_Operatie" FromRole="Rulaje" ToRole="Operatie" />
+  </EntityType>
+  <Association Name="FK_Rulaje_Cont">
+    <End Role="Cont" Type="Self.Cont" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Rulaje" Type="Self.Rulaje" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cont">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Rulaje">
+        <PropertyRef Name="idCont" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rulaje_Operatie">
+    <End Role="Operatie" Type="Self.Operatie" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Rulaje" Type="Self.Rulaje" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Operatie">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Rulaje">
+        <PropertyRef Name="idOperatie" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DADEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Conts" EntityType="Self.Cont" />
+    <EntitySet Name="Operaties" EntityType="Self.Operatie" />
+    <EntitySet Name="Rulajes" EntityType="Self.Rulaje" />
+    <AssociationSet Name="FK_Rulaje_Cont" Association="Self.FK_Rulaje_Cont">
+      <End Role="Cont" EntitySet="Conts" />
+      <End Role="Rulaje" EntitySet="Rulajes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rulaje_Operatie" Association="Self.FK_Rulaje_Operatie">
+      <End Role="Operatie" EntitySet="Operaties" />
+      <End Role="Rulaje" EntitySet="Rulajes" />
+    </AssociationSet>
+    <FunctionImport Name="BalantaVerificare2" ReturnType="Collection(Model.BalantaVerificare2_Result)" />
+  </EntityContainer>
+  <ComplexType Name="BalantaVerificare2_Result">
+    <Property Type="String" Name="Simbol" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Denumire" Nullable="true" MaxLength="50" />
+    <Property Type="Double" Name="SID" Nullable="true" />
+    <Property Type="Double" Name="SIC" Nullable="true" />
+    <Property Type="Double" Name="RulajD" Nullable="false" />
+    <Property Type="Double" Name="RulajC" Nullable="false" />
+    <Property Type="Double" Name="TSD" Nullable="true" />
+    <Property Type="Double" Name="TSC" Nullable="true" />
+  </ComplexType>
+</Schema>

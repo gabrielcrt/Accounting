@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="DADEntities">
+    <EntitySetMapping Name="Conts">
+      <EntityTypeMapping TypeName="Model.Cont">
+        <MappingFragment StoreEntitySet="Cont">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Simbol" ColumnName="Simbol" />
+          <ScalarProperty Name="Denumire" ColumnName="Denumire" />
+          <ScalarProperty Name="SID" ColumnName="SID" />
+          <ScalarProperty Name="SIC" ColumnName="SIC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Operaties">
+      <EntityTypeMapping TypeName="Model.Operatie">
+        <MappingFragment StoreEntitySet="Operatie">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Numar" ColumnName="Numar" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+          <ScalarProperty Name="Doc" ColumnName="Doc" />
+          <ScalarProperty Name="DataDoc" ColumnName="DataDoc" />
+          <ScalarProperty Name="Explicatie" ColumnName="Explicatie" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rulajes">
+      <EntityTypeMapping TypeName="Model.Rulaje">
+        <MappingFragment StoreEntitySet="Rulaje">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="idCont" ColumnName="idCont" />
+          <ScalarProperty Name="idOperatie" ColumnName="idOperatie" />
+          <ScalarProperty Name="SumaD" ColumnName="SumaD" />
+          <ScalarProperty Name="SumaC" ColumnName="SumaC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="BalantaVerificare2" FunctionName="Model.Store.BalantaVerificare2">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Model.BalantaVerificare2_Result">
+          <ScalarProperty Name="Simbol" ColumnName="Simbol" />
+          <ScalarProperty Name="Denumire" ColumnName="Denumire" />
+          <ScalarProperty Name="SID" ColumnName="SID" />
+          <ScalarProperty Name="SIC" ColumnName="SIC" />
+          <ScalarProperty Name="RulajD" ColumnName="RulajD" />
+          <ScalarProperty Name="RulajC" ColumnName="RulajC" />
+          <ScalarProperty Name="TSD" ColumnName="TSD" />
+          <ScalarProperty Name="TSC" ColumnName="TSC" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

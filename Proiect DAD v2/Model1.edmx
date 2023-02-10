@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cont">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Simbol" Type="nvarchar" MaxLength="50" />
+          <Property Name="Denumire" Type="nvarchar" MaxLength="50" />
+          <Property Name="SID" Type="float" />
+          <Property Name="SIC" Type="float" />
+        </EntityType>
+        <EntityType Name="Operatie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Numar" Type="int" />
+          <Property Name="Data" Type="date" />
+          <Property Name="Doc" Type="int" />
+          <Property Name="DataDoc" Type="date" />
+          <Property Name="Explicatie" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Rulaje">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idCont" Type="int" />
+          <Property Name="idOperatie" Type="int" />
+          <Property Name="SumaD" Type="float" />
+          <Property Name="SumaC" Type="float" />
+        </EntityType>
+        <Association Name="FK_Rulaje_Cont">
+          <End Role="Cont" Type="Self.Cont" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Rulaje" Type="Self.Rulaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cont">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Rulaje">
+              <PropertyRef Name="idCont" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rulaje_Operatie">
+          <End Role="Operatie" Type="Self.Operatie" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Rulaje" Type="Self.Rulaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Operatie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Rulaje">
+              <PropertyRef Name="idOperatie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="BalantaVerificare2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Cont" EntityType="Self.Cont" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Operatie" EntityType="Self.Operatie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rulaje" EntityType="Self.Rulaje" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Rulaje_Cont" Association="Self.FK_Rulaje_Cont">
+            <End Role="Cont" EntitySet="Cont" />
+            <End Role="Rulaje" EntitySet="Rulaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rulaje_Operatie" Association="Self.FK_Rulaje_Operatie">
+            <End Role="Operatie" EntitySet="Operatie" />
+            <End Role="Rulaje" EntitySet="Rulaje" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cont">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Simbol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Denumire" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SID" Type="Double" />
+          <Property Name="SIC" Type="Double" />
+          <NavigationProperty Name="Rulajes" Relationship="Self.FK_Rulaje_Cont" FromRole="Cont" ToRole="Rulaje" />
+        </EntityType>
+        <EntityType Name="Operatie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Numar" Type="Int32" />
+          <Property Name="Data" Type="DateTime" Precision="0" />
+          <Property Name="Doc" Type="Int32" />
+          <Property Name="DataDoc" Type="DateTime" Precision="0" />
+          <Property Name="Explicatie" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Rulajes" Relationship="Self.FK_Rulaje_Operatie" FromRole="Operatie" ToRole="Rulaje" />
+        </EntityType>
+        <EntityType Name="Rulaje">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idCont" Type="Int32" />
+          <Property Name="idOperatie" Type="Int32" />
+          <Property Name="SumaD" Type="Double" />
+          <Property Name="SumaC" Type="Double" />
+          <NavigationProperty Name="Cont" Relationship="Self.FK_Rulaje_Cont" FromRole="Rulaje" ToRole="Cont" />
+          <NavigationProperty Name="Operatie" Relationship="Self.FK_Rulaje_Operatie" FromRole="Rulaje" ToRole="Operatie" />
+        </EntityType>
+        <Association Name="FK_Rulaje_Cont">
+          <End Role="Cont" Type="Self.Cont" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Rulaje" Type="Self.Rulaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cont">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Rulaje">
+              <PropertyRef Name="idCont" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rulaje_Operatie">
+          <End Role="Operatie" Type="Self.Operatie" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Rulaje" Type="Self.Rulaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Operatie">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Rulaje">
+              <PropertyRef Name="idOperatie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DADEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Conts" EntityType="Self.Cont" />
+          <EntitySet Name="Operaties" EntityType="Self.Operatie" />
+          <EntitySet Name="Rulajes" EntityType="Self.Rulaje" />
+          <AssociationSet Name="FK_Rulaje_Cont" Association="Self.FK_Rulaje_Cont">
+            <End Role="Cont" EntitySet="Conts" />
+            <End Role="Rulaje" EntitySet="Rulajes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rulaje_Operatie" Association="Self.FK_Rulaje_Operatie">
+            <End Role="Operatie" EntitySet="Operaties" />
+            <End Role="Rulaje" EntitySet="Rulajes" />
+          </AssociationSet>
+          <FunctionImport Name="BalantaVerificare2" ReturnType="Collection(Model.BalantaVerificare2_Result)" />
+        </EntityContainer>
+        <ComplexType Name="BalantaVerificare2_Result">
+          <Property Type="String" Name="Simbol" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Denumire" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="SID" Nullable="true" />
+          <Property Type="Double" Name="SIC" Nullable="true" />
+          <Property Type="Double" Name="RulajD" Nullable="false" />
+          <Property Type="Double" Name="RulajC" Nullable="false" />
+          <Property Type="Double" Name="TSD" Nullable="true" />
+          <Property Type="Double" Name="TSC" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="DADEntities">
+          <EntitySetMapping Name="Conts">
+            <EntityTypeMapping TypeName="Model.Cont">
+              <MappingFragment StoreEntitySet="Cont">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Simbol" ColumnName="Simbol" />
+                <ScalarProperty Name="Denumire" ColumnName="Denumire" />
+                <ScalarProperty Name="SID" ColumnName="SID" />
+                <ScalarProperty Name="SIC" ColumnName="SIC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Operaties">
+            <EntityTypeMapping TypeName="Model.Operatie">
+              <MappingFragment StoreEntitySet="Operatie">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Numar" ColumnName="Numar" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Doc" ColumnName="Doc" />
+                <ScalarProperty Name="DataDoc" ColumnName="DataDoc" />
+                <ScalarProperty Name="Explicatie" ColumnName="Explicatie" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rulajes">
+            <EntityTypeMapping TypeName="Model.Rulaje">
+              <MappingFragment StoreEntitySet="Rulaje">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idCont" ColumnName="idCont" />
+                <ScalarProperty Name="idOperatie" ColumnName="idOperatie" />
+                <ScalarProperty Name="SumaD" ColumnName="SumaD" />
+                <ScalarProperty Name="SumaC" ColumnName="SumaC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="BalantaVerificare2" FunctionName="Model.Store.BalantaVerificare2">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.BalantaVerificare2_Result">
+                <ScalarProperty Name="Simbol" ColumnName="Simbol" />
+                <ScalarProperty Name="Denumire" ColumnName="Denumire" />
+                <ScalarProperty Name="SID" ColumnName="SID" />
+                <ScalarProperty Name="SIC" ColumnName="SIC" />
+                <ScalarProperty Name="RulajD" ColumnName="RulajD" />
+                <ScalarProperty Name="RulajC" ColumnName="RulajC" />
+                <ScalarProperty Name="TSD" ColumnName="TSD" />
+                <ScalarProperty Name="TSC" ColumnName="TSC" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
